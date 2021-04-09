@@ -1,11 +1,11 @@
 #include "sorts.h"
 
 namespace sorts {
-    void mergesort(std::vector<int> &list, int low, int high) {
+    void merge_sort(std::vector<int> &list, int low, int high) {
         if(low < high) {
             int mid = (high+low)/2;
-            mergesort(list, low, mid);
-            mergesort(list, mid+1, high);
+            merge_sort(list, low, mid);
+            merge_sort(list, mid+1, high);
             merge(list, low, mid, high);
         }
     }
@@ -49,7 +49,7 @@ namespace sorts {
         delete[] temp;
     }
 
-    void heapify(vector<int> &arr, int n, int i)
+    void heapify(std::vector<int> &arr, int n, int i)
     {
         int largest = i; // Initialize largest as root
         int l = 2 * i + 1; // left = 2*i + 1
@@ -65,7 +65,7 @@ namespace sorts {
     
         // If largest is not root
         if (largest != i) {
-            swap(arr[i], arr[largest]);
+            std::swap(arr[i], arr[largest]);
     
             // Recursively heapify the affected sub-tree
             heapify(arr, n, largest);
@@ -73,7 +73,7 @@ namespace sorts {
     }
     
     // main function to do heap sort
-    void heapSort(vector<int> &arr, int n)
+    void heap_sort(std::vector<int> &arr, int n)
     {
         // Build heap (rearrange array)
         for (int i = n / 2 - 1; i >= 0; i--)
@@ -82,28 +82,28 @@ namespace sorts {
         // One by one extract an element from heap
         for (int i = n - 1; i >= 0; i--) {
             // Move current root to end
-            swap(arr[0], arr[i]);
+            std::swap(arr[0], arr[i]);
     
             // call max heapify on the reduced heap
             heapify(arr, i, 0);
         }
     }
 
-    void swap(int* a, int* b)
-    {
-        int t = *a;
-        *a = *b;
-        *b = t;
-    }
+
     
     /* This function takes last element as pivot, places
     the pivot element at its correct position in sorted
     array, and places all smaller (smaller than pivot)
     to left of pivot and all greater elements to right
     of pivot */
-    int partition (vector<int> &arr, int low, int high)
+    int partition (std::vector<int> &arr, int low, int high)
     {
-        int pivot = arr[high]; // pivot
+        int mid = (high+low)/2;
+        int v[3] = {low,mid,high};
+        std::sort(v,v+3);
+        int median = v[1];
+        
+        int pivot = arr[median]; // pivot
         int i = (low - 1); // Index of smaller element and indicates the right position of pivot found so far
     
         for (int j = low; j <= high - 1; j++)
@@ -112,10 +112,10 @@ namespace sorts {
             if (arr[j] < pivot)
             {
                 i++; // increment index of smaller element
-                swap(&arr[i], &arr[j]);
+                std::swap(arr[i], arr[j]);
             }
         }
-        swap(&arr[i + 1], &arr[high]);
+        std::swap(arr[i + 1], arr[high]);
         return (i + 1);
     }
     
@@ -123,7 +123,7 @@ namespace sorts {
     arr[] --> Array to be sorted,
     low --> Starting index,
     high --> Ending index */
-    void quickSort(vector<int> &arr, int low, int high)
+    void quick_sort(std::vector<int> &arr, int low, int high)
     {
         if (low < high)
         {
@@ -133,8 +133,8 @@ namespace sorts {
     
             // Separately sort elements before
             // partition and after partition
-            quickSort(arr, low, pi - 1);
-            quickSort(arr, pi + 1, high);
+            quick_sort(arr, low, pi - 1);
+            quick_sort(arr, pi + 1, high);
         }
     }
 
