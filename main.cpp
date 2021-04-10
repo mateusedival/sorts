@@ -8,6 +8,10 @@
 #include <filesystem>
 namespace fs = std::filesystem;
 
+bool comparision (std::tuple<int, std::string> a, 
+                  std::tuple<int, std::string> b)
+{return (std::get<0>(a) < std::get<0>(b));}
+
 int main () {
 
 
@@ -21,6 +25,10 @@ int main () {
             file_names.insert(path_string);
         }
 
+        std::cout << path << ",merge,quick,heap,size" << "\n";
+
+        std::vector<std::tuple<int, std::string>> data;
+
         for (auto file : file_names) {
             std::ifstream in;
             in.open(file, std::ifstream::in);
@@ -29,8 +37,6 @@ int main () {
                 std::cerr << "Error opening file" << std::endl;
                 return 0;
             }
-
-            std::cout << file << "\n";
 
             std::vector<int> ord;
             int s;
@@ -71,12 +77,22 @@ int main () {
                 mean_quick += elapsed.count();
             }
 
-            std::cout << mean_merge/10.0 << '\n';
+            std::string string_data = file + ","
+                                    + std::to_string(mean_merge/10.0) + ","
+                                    + std::to_string(mean_quick/10.0) + ","
+                                    + std::to_string(mean_heap/10.0) + ","
+                                    + std::to_string(ord.size()) + "\n";
 
-            std::cout << mean_heap/10.0 << '\n';
+            std::tuple<int, std::string> aux (ord.size(), string_data);
 
-            std::cout << mean_quick/10.0 << '\n';
+            data.push_back(aux);
         }
+
+        std::sort(data.begin(), data.end(), comparision);
+        for(auto d : data) {
+            std::cout << std::get<1>(d);
+        }
+        std::cout << "\n";
 
     }
 }
